@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 export const ToastContext = React.createContext();
 
 function ToastProvider({ children }) {
   const [messages, setMessages] = useState([]);
+
+  const clearAll = React.useCallback(() => {
+    setMessages([]);
+  }, []);
+  useEscapeKey(clearAll);
 
   const onToastSubmit = React.useCallback((message, variant) => {
     setMessages((currentMessages) => [
