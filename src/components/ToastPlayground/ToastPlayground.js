@@ -1,34 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
 import Toast from "../Toast/Toast";
 import ToastShelf from "../ToastShelf/ToastShelf";
+import { ToastContext } from "../ToastProvider/ToastProvider";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 const defaultVariant = VARIANT_OPTIONS[0];
 
 function ToastPlayground() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
   const [variant, setVariant] = useState(defaultVariant);
+  const { messages, onDelete, onToastSubmit } = useContext(ToastContext);
   const onSubmit = (e) => {
     e.preventDefault();
-    setMessages([
-      ...messages,
-      {
-        id: crypto.randomUUID(),
-        message,
-        variant,
-      },
-    ]);
+    onToastSubmit(message, variant);
     setMessage("");
     setVariant(defaultVariant);
-  };
-
-  const onDelete = (idToDelete) => {
-    setMessages(messages.filter(({ id }) => id !== idToDelete));
   };
 
   return (
